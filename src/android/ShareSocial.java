@@ -59,6 +59,8 @@ public class ShareSocial extends Plugin {
 
 	public void startSmsActivity( String msg ) {
 		
+		// TODO: add restriction option to use only email, sms and so on
+		// instead of different activities
 		Uri uri = Uri.parse("smsto:"); 
 		Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
         it.putExtra("sms_body",msg ); 
@@ -78,6 +80,11 @@ public class ShareSocial extends Plugin {
 	
 	public void startSocialActivity ( String msg )
 	{
+		// Intent share = new Intent(Intent.ACTION_SEND);
+		// share.setType("image/jpeg") // might be text, sound, whatever
+		// share.putExtra(Intent.EXTRA_STREAM, pathToPicture);
+		// startActivity(Intent.createChooser(share, "share"));
+
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 		emailIntent.setType("text/plain");
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, msg );

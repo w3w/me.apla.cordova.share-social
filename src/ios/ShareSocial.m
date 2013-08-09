@@ -5,15 +5,15 @@
 //  Sponsored by Brightflock: http://brightflock.com
 //
 
-#import "Social.h"
+#import "ShareSocial.h"
 
-@interface Social ()
+@interface ShareSocial ()
 
 @end
 
-@implementation Social
+@implementation ShareSocial
 
-- (void)available:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options {
+- (void)available:(CDVInvokedUrlCommand*)command {
     BOOL avail = false;
     
     if (NSClassFromString(@"UIActivityViewController")) {
@@ -21,25 +21,25 @@
     }
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:avail];
-    [self writeJavascript:[pluginResult toSuccessCallbackString:[arguments objectAtIndex:0]]];
+    [self writeJavascript:[pluginResult toSuccessCallbackString:[command callbackId]]]];
 }
 
-- (void)share:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options {
+- (void)share:(CDVInvokedUrlCommand*)command {
     
     if (!NSClassFromString(@"UIActivityViewController")) {
         return;
     }
     
-    NSString *text = [arguments objectAtIndex:1];
+    NSString *text = [command.arguments objectAtIndex:1];
     
-    NSString *imageName = [arguments objectAtIndex:2];
+    NSString *imageName = [command.arguments objectAtIndex:2];
     UIImage *image = nil;
     
     if (imageName) {
         image = [UIImage imageNamed:imageName];
     }
     
-    NSString *urlString = [arguments objectAtIndex:3];
+    NSString *urlString = [command.arguments objectAtIndex:3];
     NSURL *url = nil;
     
     if (urlString) {
@@ -55,6 +55,8 @@
     [[UIActivityViewController alloc] initWithActivityItems:activityItems
                                       applicationActivities:applicationActivities];
     [self.viewController presentViewController:activityVC animated:YES completion:nil];
+    // TODO: add controller delegation. purpose: prevent two sharing dialogs
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];
 }
 
 @end
