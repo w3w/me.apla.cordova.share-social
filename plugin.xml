@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
+           id="me.apla.cordova.social"
+      version="0.1.0">
+    <name>Social</name>
+    <description>Cordova Social sharing plugin</description>
+    <license>Apache</license>
+    <keywords>cordova,social</keywords>
+
+    <js-module src="www/social.js" name="social">
+        <clobbers target="plugins" />
+    </js-module>
+    
+    <!-- android -->
+    <!--platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Social" value="me.apla.cordova.social"/>
+        </config-file>
+
+        <source-file src="src/android/Social.java" target-dir="src/me/apla/cordova/social" />
+core" />
+    </platform-->
+       
+   <!-- ios -->
+   <platform name="ios">    
+        <config-file target="config.xml" parent="/*">
+            <feature name="Social">
+                <param name="ios-package" value="Social" /> 
+            </feature>
+        </config-file>
+        <header-file src="src/ios/Social.h" />
+        <source-file src="src/ios/Social.m" />
+    </platform>
+
+</plugin>
