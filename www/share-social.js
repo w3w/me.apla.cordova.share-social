@@ -1,7 +1,9 @@
 //
 //  social.js
 //
-//  Cameron Lerch
+//  Ivan Baktsheev, 2013, plugin.xml, merging android and ios
+//  --------------------
+//  Cameron Lerch, 2013, original ios plugin
 //  Sponsored by Brightflock: http://brightflock.com
 //
 
