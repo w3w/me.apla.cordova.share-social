@@ -31,6 +31,8 @@ core" />
         </config-file>
         <header-file src="src/ios/ShareSocial.h" />
         <source-file src="src/ios/ShareSocial.m" />
+
+        <framework src="Social.framework" />
     </platform>
 
 </plugin>
