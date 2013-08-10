@@ -7,26 +7,26 @@
 //  Sponsored by Brightflock: http://brightflock.com
 //
 
-function Social() {
+function ShareSocial() {
 };
 
-Social.prototype.available = function(callback) {
+ShareSocial.prototype.available = function(callback) {
 	cordova.exec(function(avail) {
 		callback(avail ? true : false);
-	}, null, "Social", "available", []);
+	}, null, "ShareSocial", "available", []);
 };
 
-Social.prototype.share = function(message, url, image) {
-    cordova.exec(null, null, "Social", "share", [message, image, url]);
+ShareSocial.prototype.share = function(message, url, image) {
+    cordova.exec(null, null, "ShareSocial", "share", [message, image, url]);
 };
     
-Social.install = function() {
+ShareSocial.install = function() {
     if (!window.plugins) {
         window.plugins = {};	
     }
 
-    window.plugins.social = new Social();
-    return window.plugins.social;
+    window.plugins.shareSocial = new ShareSocial();
+    return window.plugins.shareSocial;
 };
 
-cordova.addConstructor(Social.install);
+cordova.addConstructor(ShareSocial.install);
