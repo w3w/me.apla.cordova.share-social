@@ -23,7 +23,7 @@
     }
     
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:avail];
-    [self writeJavascript:[pluginResult toSuccessCallbackString:[command callbackId]]]];
+    [self writeJavascript:[pluginResult toSuccessCallbackString:[command callbackId]]];
 }
 
 - (void)share:(CDVInvokedUrlCommand*)command {
@@ -32,20 +32,32 @@
         return;
     }
     
-    NSString *text = [command.arguments objectAtIndex:1];
+    CDVPluginResult *result;
     
-    NSString *imageName = [command.arguments objectAtIndex:2];
+    NSString *text = [command.arguments objectAtIndex:0];
+    if (!text) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Text cannot be empty"];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+        return;
+    }
+    
+    NSString *imageName = [command.arguments objectAtIndex:1];
     UIImage *image = nil;
     
-    if (imageName) {
+    // can be NSNull or empty string
+    if (imageName && [imageName isKindOfClass:[NSString class]] && [imageName length] > 0) {
         image = [UIImage imageNamed:imageName];
     }
     
-    NSString *urlString = [command.arguments objectAtIndex:3];
+    NSString *urlString = [command.arguments objectAtIndex:2];
     NSURL *url = nil;
     
-    if (urlString) {
+    if (urlString && [urlString isKindOfClass:[NSString class]] && [urlString length] > 0) {
         url = [NSURL URLWithString:urlString];
+    } else {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL cannot be empty"];
+        [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
+        return;
     }
     
     NSArray *activityItems = [[NSArray alloc] initWithObjects:text, image, url, nil];
@@ -58,7 +70,8 @@
                                       applicationActivities:applicationActivities];
     [self.viewController presentViewController:activityVC animated:YES completion:nil];
     // TODO: add controller delegation. purpose: prevent two sharing dialogs
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:[command callbackId]];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:[command callbackId]];
 }
 
 @end

@@ -16,13 +16,26 @@ ShareSocial.prototype.available = function(callback) {
 	}, null, "ShareSocial", "available", []);
 };
 
-ShareSocial.prototype.share = function(message, url, image) {
-    cordova.exec(null, null, "ShareSocial", "share", [message, image, url]);
+ShareSocial.prototype.share = function(message, image, url, successCallback, failCallback) {
+
+    function success(args) {
+        successCallback && successCallback(args);
+    }
+
+    function fail(args) {
+        failCallback && failCallback(args);
+    }
+
+	return cordova.exec(function(args) {
+	   success(args);
+	}, function(args) {
+	   fail(args);
+	}, 'ShareSocial', 'share', [message, image || "", url]);
 };
-    
+
 ShareSocial.install = function() {
     if (!window.plugins) {
-        window.plugins = {};	
+        window.plugins = {};    
     }
 
     window.plugins.shareSocial = new ShareSocial();
