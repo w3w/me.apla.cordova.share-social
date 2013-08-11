@@ -13,8 +13,6 @@
 @interface ShareSocial : CDVPlugin {
 }
 
-- (void)available:(CDVInvokedUrlCommand*)command;
-
-- (void)share:(CDVInvokedUrlCommand*)command;
-
+- (void) share:(CDVInvokedUrlCommand*)command;
+- (void) showActivities:(NSArray *)list;
 @end
