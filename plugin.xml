@@ -15,10 +15,12 @@
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Social" value="me.apla.cordova.share-social"/>
+            <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
+                <param name="android-package" value="me.apla.cordova.ShareSocial"/>
+            </feature>
         </config-file>
 
-        <source-file src="src/android/ShareSocial.java" target-dir="src/me/apla/cordova/share-social" />
+        <source-file src="src/android/ShareSocial.java" target-dir="src/me/apla/cordova" />
 core" />
     </platform>
        

@@ -1,25 +1,24 @@
-package com.phonegap.plugins.ShareSocial;
+package me.apla.cordova;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
 
-import com.phonegap.api.Plugin;
-import com.phonegap.api.PluginResult;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
 
-public class ShareSocial extends Plugin {
+public class ShareSocial extends CordovaPlugin {
 	
-	private String callback;
+	private CallbackContext callbackContext;
 	public String smsCopy = ""; 
 
 	@Override
-	public PluginResult execute(String action, JSONArray args, String callbackId) {
-			
+	public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+		JSONObject r = new JSONObject();
 		try
 		{
 			if (action.equals("startSmsActivity")) {
@@ -36,35 +35,37 @@ public class ShareSocial extends Plugin {
 				
 				startEmailActivity(msg, subject );
 			}
-			else if( action.equals("startSocialActivity") ) 
+			else if( action.equals("share") ) 
 			{
-				JSONObject obj = args.getJSONObject(0);
-				String msg = obj.has("message") ? obj.getString("message") : "";
+				String msg = args.getString(0);
+				String img = args.getString(1);
+				String url = args.getString(2);
 				
-				startSocialActivity(msg);
+				startSocialActivity(msg, img, url);
 			}
 			
 		}
 		catch (JSONException e) {
             e.printStackTrace();
-            return new PluginResult(PluginResult.Status.JSON_EXCEPTION);
+            callbackContext.error(r);
+            return false;
         }
 		
 		
-		PluginResult mPlugin = new PluginResult(PluginResult.Status.NO_RESULT);
-		mPlugin.setKeepCallback(true);
-		this.callback = callbackId;
-		return mPlugin;
+		this.callbackContext = callbackContext;
+		
+		return true;
 	}
 
-	public void startSmsActivity( String msg ) {
+	public void startSmsActivity( String msg) {
 		
 		// TODO: add restriction option to use only email, sms and so on
 		// instead of different activities
 		Uri uri = Uri.parse("smsto:"); 
 		Intent it = new Intent(Intent.ACTION_SENDTO, uri); 
         it.putExtra("sms_body",msg ); 
-        this.ctx.startActivityForResult( (Plugin) this, it, 1 );
+        
+        //this.ctx.startActivityForResult( (Plugin) this, it, 1 );
 	}
 	
 	public void startEmailActivity ( String msg, String subject )
@@ -75,21 +76,24 @@ public class ShareSocial extends Plugin {
 		emailIntent.setType("message/rfc822");
 		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject );  
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, msg );  
-		this.ctx.startActivity(emailIntent); 
+		// this.ctx.startActivity(emailIntent); 
 	}
 	
-	public void startSocialActivity ( String msg )
+	public void startSocialActivity (String msg, String img, String url)
 	{
 		// Intent share = new Intent(Intent.ACTION_SEND);
 		// share.setType("image/jpeg") // might be text, sound, whatever
 		// share.putExtra(Intent.EXTRA_STREAM, pathToPicture);
 		// startActivity(Intent.createChooser(share, "share"));
 
-		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-		emailIntent.setType("text/plain");
-		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, msg );
+		Intent richIntent = new Intent(Intent.ACTION_SEND);
+		richIntent.setType("text/plain");
+		// richIntent.putExtra(Intent.EXTRA_TEXT, msg );
+		richIntent.putExtra(Intent.EXTRA_TEXT, msg);
+		richIntent.putExtra(Intent.EXTRA_TEXT, url);
+//		Intent.Ex
 		
-		this.ctx.startActivity(Intent.createChooser(emailIntent, "Share Dead Tone in:")); 
+		cordova.getActivity().startActivity(Intent.createChooser(richIntent, "")); 
 	}
 	
 	
@@ -105,7 +109,6 @@ public class ShareSocial extends Plugin {
 			e.printStackTrace();
 		}
 		
-		this.success(new PluginResult(PluginResult.Status.OK,smsObj
-				), this.callback);
+		this.callbackContext.success();
 	}
 }
