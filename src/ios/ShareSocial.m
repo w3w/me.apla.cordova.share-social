@@ -59,7 +59,10 @@
         } else if ([[remoteImage scheme] isEqual: @"http"]) {
             // the best way to handle this — use async loading
             // but this adds delay to the actionsheet. avoid this!
-            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:remoteImage];
+            //NSURLRequest *urlRequest = [NSURLRequest requestWithURL:remoteImage];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL: remoteImage
+                cachePolicy:NSURLRequestReloadIgnoringCacheData
+                timeoutInterval:60.0];
             NSOperationQueue *queue = [[NSOperationQueue alloc] init];
             [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
             {
