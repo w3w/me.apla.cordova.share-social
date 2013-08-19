@@ -30,7 +30,17 @@ ShareSocial.prototype.share = function(message, image, url, title, successCallba
 	   success(args);
 	}, function(args) {
 	   fail(args);
-	}, 'ShareSocial', 'share', [message, image || "", url]);
+	}, 'com.blackberry.invoke.card', 'invokeTargetPicker', {
+        request: {
+            action: "bb.action.SHARE",
+            //type: "text/plain", // from example
+            //mime: "text/plain", // from doc https://developer.blackberry.com/html5/apis/blackberry.invoke.card.html#.invokeTargetPicker
+            //data: message, //http://blackberry-webworks.github.io/WebWorks-API-Docs/WebWorks-API-Docs-next-BB10/view/blackberry.invoke.html
+            uri: url,
+            target_type: ["APPLICATION", "VIEWER", "CARD"]
+        },
+        title: title
+    });
 };
 
 ShareSocial.install = function() {

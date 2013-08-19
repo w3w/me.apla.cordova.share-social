@@ -8,12 +8,11 @@
     <license>Apache</license>
     <keywords>cordova,social</keywords>
 
-    <js-module src="www/share-social.js" name="shareSocial">
-        <clobbers target="plugins" />
-    </js-module>
-    
     <!-- android -->
     <platform name="android">
+        <js-module src="www/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ShareSocial" value="me.apla.cordova.ShareSocial">
                 <param name="android-package" value="me.apla.cordova.ShareSocial"/>
@@ -26,6 +25,9 @@ core" />
        
    <!-- ios -->
    <platform name="ios">    
+        <js-module src="www/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
         <config-file target="config.xml" parent="/*">
             <feature name="ShareSocial">
                 <param name="ios-package" value="ShareSocial" /> 
@@ -37,4 +39,38 @@ core" />
         <framework src="Social.framework" />
     </platform>
 
+    <!-- blackberry -->
+    <!--
+    from: https://github.com/blackberry/BB10-WebWorks-Samples/tree/master/ShareTargets
+var request = {
+    action: 'bb.action.SHARE',
+    uri: 'file://' + path,
+    target_type: ["APPLICATION", "VIEWER", "CARD"]
+};
+Display the "Share Card"
+
+blackberry.invoke.card.invokeTargetPicker(request, "Your Title",
+
+    // success callback
+    function() {
+        console.log('success');
+    },
+
+    // error callback
+    function(e) {
+        console.log('error: ' + e);
+    }
+);
+     -->
+
+    <platform name="blackberry10">
+        <source-file src="src/blackberry10/index.js" />
+        <js-module src="src/blackberry10/share-social.js" name="shareSocial">
+            <clobbers target="plugins" />
+        </js-module>
+
+        <config-file target="www/config.xml" parent="/widget">
+            <feature name="com.blackberry.invoke.card" value="com.blackberry.invoke.card" />
+        </config-file>
+    </platform>
 </plugin>
