@@ -30,7 +30,7 @@ ShareSocial.prototype.share = function(message, image, url, title, successCallba
 	   success(args);
 	}, function(args) {
 	   fail(args);
-	}, 'com.blackberry.invoke.card', 'invokeTargetPicker', {
+	}, 'me.apla.cordova.share-social', 'invokeTargetPicker', {
         request: {
             action: "bb.action.SHARE",
             //type: "text/plain", // from example
