@@ -78,7 +78,7 @@ blackberry.invoke.card.invokeTargetPicker(request, "Your Title",
 	<!-- WP8 -->
 	<platform name="wp8">
         <js-module src="www/share-social.js" name="shareSocial">
-            <clobbers target="plugins" />
+            <clobbers target="plugins.shareSocial" />
         </js-module>
         <config-file target="config.xml" parent="/*">
             <feature name="ShareSocial">
